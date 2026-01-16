@@ -14,7 +14,8 @@ RUN uv sync --locked
 
 
 # COPY from host machine to a directory inside the container
-COPY pipeline.py . 
+# COPY pipeline.py . 
+COPY ingest_data.py .
 
 # ENTRYPOINT ["uv", "run", "python", "pipeline.py"] -- to not write uv run here, use the ENV PATH
 ENTRYPOINT ["python", "pipeline.py"]
