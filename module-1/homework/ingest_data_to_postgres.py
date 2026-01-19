@@ -43,87 +43,77 @@ parse_dates = [
     "lpep_dropoff_datetime"
 ]
 
-def ingest_green(filepath, engine, chunksize=100000):
+def run():
+    green_csv_url = "green_trips_2025-11.csv"
+    zones_csv_url = "taxi_zone_lookup.csv"
+    chunksize=100000    
 
+    engine = create_engine(f'postgresql://root:root@localhost:5432/ny_green')
+    
     df_green_iter = pd.read_csv(
-        filepath, 
+        green_csv_url, 
         dtype=dtype_green, # pyright: ignore[reportArgumentType]
         parse_dates=parse_dates, 
         iterator=True, 
         chunksize=chunksize
     ) # type: ignore
 
-    first_chunk = next(df_green_iter)
+    first = True
 
-    first_chunk.head(0).to_sql(
-        name="green_taxi_data",
-        con=engine,
-        if_exists="replace"
-    )
-
-    print("Table created")
-
-    first_chunk.to_sql(
-        name="green_taxi_data",
-        con=engine,
-        if_exists="append"
-    )
-
-    print("Inserted first chunk:", len(first_chunk))
+    print("=========INSERTING green_trips ============")
 
     for df_chunk in df_green_iter:
+
+        if first:
+            # Create table schema (no data)
+            df_chunk.head(0).to_sql(
+                name="green_taxi_data",
+                con=engine,
+                if_exists="replace"
+            )
+            first = False
+            print("Table created")
+
+        # Insert chunk
         df_chunk.to_sql(
             name="green_taxi_data",
             con=engine,
             if_exists="append"
         )
-        print("Inserted chunk:", len(df_chunk))
 
-
-def ingest_zones(filepath, engine, chunksize=100000):
+        print("Inserted:", len(df_chunk))
+    
+    print("=========INSERTING taxi_zone ============")
 
     df_zone_iter = pd.read_csv(
-        filepath, 
+        zones_csv_url, 
         dtype=dtype_zone, # pyright: ignore[reportArgumentType]
         iterator=True, 
         chunksize=chunksize
     ) # type: ignore
 
-    first_chunk = next(df_zone_iter)
-
-    first_chunk.head(0).to_sql(
-        name="taxi_zones",
-        con=engine,
-        if_exists="replace"
-    )
-
-    print("Table created")
-
-    first_chunk.to_sql(
-        name="taxi_zones",
-        con=engine,
-        if_exists="append"
-    )
-
-    print("Inserted first chunk:", len(first_chunk))
+    first = True
 
     for df_chunk in df_zone_iter:
+
+        if first:
+            # Create table schema (no data)
+            df_chunk.head(0).to_sql(
+                name="taxi_zones",
+                con=engine,
+                if_exists="replace"
+            )
+            first = False
+            print("Table created")
+
+        # Insert chunk
         df_chunk.to_sql(
             name="taxi_zones",
             con=engine,
             if_exists="append"
         )
-        print("Inserted chunk:", len(df_chunk))
 
-
-def run():
-    green_csv_url = "green_trips_2025-11.csv"
-    zones_csv_url = "taxi_zone_lookup.csv"    
-
-    engine = create_engine(f'postgresql://root:root@localhost:5432/ny_green')
-
-    ingest_green(green_csv_url, engine)
-    ingest_zones(zones_csv_url, engine)
+        print("Inserted:", len(df_chunk))
 
 if __name__ == '__main__':
     run()
