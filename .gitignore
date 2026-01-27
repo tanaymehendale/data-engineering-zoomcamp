@@ -212,7 +212,7 @@ __marimo__/
 # GCLOUD files
 /module-1/terraform-demo/google-cloud-sdk
 /module-1/terraform-demo/google-cloud-cli-linux-x86_64.tar.gz
-
+/module-2/my_creds_gcp.json
 # ------------------------------------------------------------------- #
 # TERRAFORM
 # Credentials
