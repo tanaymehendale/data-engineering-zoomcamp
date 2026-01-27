@@ -2,13 +2,27 @@
 
 ## Step 1: Setup GCP. Create GCS bucket and BigQuery Dataset
 
+Set up Google Cloud project by creating a GCS bucket and a BigQuery dataset.
+
+Executed [GCP Setup Flow](/module-2/flows/07_gcp_setup.yaml) to create resources.
+
+![GCP Setup](/module-2/homework/screenshots/gcp_setup.png)
+
 ## Step 2: Backfill Data for Green Taxi Trips (2020-01 to 2021-07)
+
+Executions for backfilled data for green taxi trips using [Scheduled GCP Flow](/module-2/flows/09_gcp_taxi_scheduled.yaml) -
+
+![Backfilled Green Trips 2020-01 to 2021-07](/module-2/homework/screenshots/green_taxi_backfill.png)
 
 ## Step 3: Backfill Data for Yellow Taxi Trips (2020-01 to 2021-07)
 
+Executions for backfilled data for yellow taxi trips using [Scheduled GCP Flow](/module-2/flows/09_gcp_taxi_scheduled.yaml)-
+
+![Backfilled Yellow Trips 2020-01 to 2021-07](/module-2/homework/screenshots/yellow_taxi_backfill.png)
+
 ## Examining data in GCS Bucket
 
-### Query to get number of rows for all yellow trip CSV files
+Query to get number of rows for all yellow trip CSV files
 
 ```sql
 SELECT COUNT(*) 
@@ -29,7 +43,7 @@ WHERE filename IN (
 )
 ```
 
-### Query to get number of rows for all green trip CSV files
+Query to get number of rows for all green trip CSV files
 
 ```sql
 SELECT COUNT(*) 
