@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw_data
+    description: "Raw data sources for NYC taxi rides"
+    database: taxi_rides_local # For Cloud based - enter your Project ID (GCP Project)
+    schema: prod               # For Cloud based - this will be BigQuery dataset name
+    tables:
+      - name: yellow_tripdata
+      - name: green_tripdata

@@ -53,10 +53,10 @@ def update_gitignore():
 
 if __name__ == "__main__":
     # Update .gitignore to exclude data directory
-    # update_gitignore()
+    update_gitignore()
 
-    # for taxi_type in ["yellow", "green"]:
-    #     download_and_convert_files(taxi_type)
+    for taxi_type in ["yellow", "green"]:
+        download_and_convert_files(taxi_type)
 
     # con = duckdb.connect("taxi_rides_ny.duckdb")
     con = duckdb.connect("taxi_rides_local.duckdb")
